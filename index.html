@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MFS Charge Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+    <div class="main-card relative w-full max-w-md border rounded-2xl shadow-2xl p-8 fade-in">
+        
+        <!-- Controls: Dark Mode & Translator -->
+        <div class="absolute top-5 right-5 flex flex-col sm:flex-row items-center gap-3">
+            <!-- Translator Button -->
+            <button id="translateBtn" class="w-14 h-8 flex items-center justify-center rounded-full font-bold text-sm transition-colors" style="background-color: var(--toggle-bg); color: var(--text-primary);">BN</button>
+            
+            <!-- Dark Mode Toggle -->
+            <div>
+                <input type="checkbox" id="darkModeToggle" class="hidden"/>
+                <label for="darkModeToggle" class="toggle-bg w-14 h-8 rounded-full flex items-center p-1 cursor-pointer transition-colors">
+                    <span class="toggle-ball w-6 h-6 rounded-full shadow-md transform transition-transform duration-300 ease-in-out" id="toggleBall">
+                        <svg id="sunIcon" class="w-4 h-4 m-1 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        <svg id="moonIcon" class="w-4 h-4 m-1 text-sky-400 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                    </span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Icon and Header Text -->
+        <div class="text-center mb-6">
+             <div class="inline-block p-3 bg-black/5 rounded-full mb-4">
+                <!-- Bank Icon -->
+                <svg class="w-10 h-10 accent-text" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" />
+                </svg>
+            </div>
+            <h1 class="text-2xl font-bold" data-lang-key="title">MFS Charge Calculator</h1>
+            <p class="mt-1" style="color: var(--text-secondary);" data-lang-key="subtitle">Calculate mobile banking fees.</p>
+        </div>
+
+        <!-- Input Form -->
+        <form id="calculatorForm" class="space-y-4">
+            <!-- Amount Input -->
+            <div>
+                 <label class="block mb-2 text-sm font-medium" style="color: var(--text-secondary);" data-lang-key="amount_label">Amount</label>
+                 <input type="text" id="amount" inputmode="decimal" class="input-field w-full rounded-lg px-3 py-2" placeholder="Enter amount" data-lang-key="amount_placeholder">
+            </div>
+
+            <!-- Provider Selection -->
+            <div>
+                <label class="block mb-2 text-sm font-medium" style="color: var(--text-secondary);" data-lang-key="provider_label">Provider</label>
+                <select id="provider" class="input-field w-full rounded-lg px-3 py-2">
+                    <option value="" disabled selected data-lang-key="provider_default_option">Select an MFS</option>
+                    <option value="bKash" data-lang-key="bKash">bKash</option>
+                    <option value="Rocket" data-lang-key="Rocket">Rocket</option>
+                    <option value="Nagad" data-lang-key="Nagad">Nagad</option>
+                    <option value="Upay" data-lang-key="Upay">Upay</option>
+                </select>
+            </div>
+
+            <!-- Transaction Type Selection -->
+            <div>
+                <label class="block mb-2 text-sm font-medium" style="color: var(--text-secondary);" data-lang-key="transaction_type_label">Transaction Type</label>
+                <select id="transactionType" class="input-field w-full rounded-lg px-3 py-2">
+                    <option value="" disabled selected data-lang-key="transaction_type_default_option">Select a Method</option>
+                </select>
+            </div>
+            
+            <button type="submit" id="calculate-btn" class="w-full text-white font-bold py-3 px-4 rounded-lg transition-transform transform hover:scale-105" style="background-color: var(--accent-color);" data-lang-key="calculate_button">Calculate</button>
+        </form>
+
+        <!-- Result Display -->
+        <div id="result-container" class="hidden text-center mt-6 rounded-lg">
+            <!-- Content will be injected by JavaScript -->
+        </div>
+
+        <!-- Fee Comparison Section -->
+        <div id="comparison-section" class="hidden mt-4">
+            <div class="flex justify-center items-center">
+                <label for="comparisonToggle" class="mr-2" style="color: var(--text-secondary);" data-lang-key="fee_comparison_label">Show Fee Comparison</label>
+                <input type="checkbox" id="comparisonToggle" class="hidden"/>
+                <label for="comparisonToggle" class="toggle-bg w-14 h-8 rounded-full flex items-center p-1 cursor-pointer transition-colors">
+                    <span class="toggle-ball w-6 h-6 rounded-full shadow-md transform transition-transform duration-300 ease-in-out"></span>
+                </label>
+            </div>
+            <div id="comparison-table-container" class="hidden mt-4 result-box p-4 rounded-lg">
+                <!-- Comparison table will be injected here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
