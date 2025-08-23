@@ -1,6 +1,6 @@
 # Cashout Charge Calculator
 <h4 align="left">A simple, user-friendly web application to calculate cash-out charges for various Mobile Financial Services (MFS) in Bangladesh. This tool helps users quickly determine the fees associated with their transactions and compare rates between different providers.</h4>
-<h2 align="left">Link: https://fahimfaisaladitto.github.io/cashout-charge/ </h2>
+<h2 align="left">Link: https://fahimfaisaladitto.github.io/charge-clculator/ </h2>
 
 # Screenshots
 <img width="403" height="819" alt="iPhone-13-PRO-fahimfaisaladitto github io (29)" src="https://github.com/user-attachments/assets/3f4e0dcb-5890-43de-abdd-c1bdb0287cd9" />
